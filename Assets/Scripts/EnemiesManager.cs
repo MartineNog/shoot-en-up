@@ -19,18 +19,12 @@ public class EnemiesManager : MonoBehaviour
         StartCoroutine(Enemies());
     }
 
-    void Update()
-    {
-        
-    }
-
     IEnumerator Enemies()
     {
 
         while (Application.isPlaying)
         {
-            m_Time_Enemies = Random.Range(0.3f,3);
-            print(m_Time_Enemies);
+            m_Time_Enemies = 3;     //Random.Range(0.3f,3);
             float borne = m_MainCamera.ScreenToWorldPoint(m_MainCamera.transform.position).x;
             float position_x = Random.Range(-borne, borne);    // A mettre en aléatoire
             float position_y = m_MainCamera.ScreenToWorldPoint(m_MainCamera.transform.position).y;  // A mettre en haut de l'écran

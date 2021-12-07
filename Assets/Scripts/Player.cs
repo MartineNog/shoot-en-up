@@ -3,33 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
 
-public class Player : MonoBehaviour
+public class Player : Entity
 {
     [SerializeField] private Camera m_MainCamera;
     [SerializeField] private float m_VerticalSpeed;
     [SerializeField] private float m_HorizontalSpeed;
     [SerializeField] private float m_margin;
     [SerializeField] private float m_Cadence_Shot;
-    [SerializeField] private GameObject m_Bullets;
+    [SerializeField] private Bullet m_Bullets;
     [SerializeField] private Stopwatch m_Stopwatch;
-
+    public int m_score = 0;
 
     private void Awake()
     {
+        WriteCurrentPV(10);
         m_MainCamera = Camera.main;
         m_Stopwatch = new Stopwatch();
         m_Stopwatch.Start();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+   
     void Update()
     {
-        PlayerControl();
+        PlayerControl(); 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Si le joueur est touché par un ennemis, on réduit sa vie
+        if (collision.gameObject.tag == "Enemy")
+        {
+            WriteCurrentPV(ReducePV(1));
+            print($"Player = {ReadCurrentPV()}");
+            // Si le joueur n'a plus de vie, on arrête la partie
+            if (ReadCurrentPV() <= 0)
+            {
+                Destroy(this.gameObject);
+                print("PERDU!!");
+            }
+        }
     }
 
     void PlayerControl()
@@ -56,9 +67,17 @@ public class Player : MonoBehaviour
             if (m_Stopwatch.Elapsed.Milliseconds >= m_Cadence_Shot)
             {
                 m_Bullets.transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, 0);
-                Instantiate(m_Bullets);
-                m_Stopwatch.Restart(); 
+                Bullet bullet = Instantiate(m_Bullets);
+                bullet.Action.AddListener(OnBulletHit);
+                m_Stopwatch.Restart();
+                print($"Score = {m_score}");
             }
         }
     }
+
+    public void OnBulletHit()
+    {
+        m_score++;
+    }
+
 }

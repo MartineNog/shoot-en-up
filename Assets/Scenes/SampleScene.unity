@@ -312,9 +312,10 @@ GameObject:
   - component: {fileID: 1307870808}
   - component: {fileID: 1307870807}
   - component: {fileID: 1307870806}
+  - component: {fileID: 1307870811}
   m_Layer: 0
   m_Name: Personnage
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -331,12 +332,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9a0dd7ded4a4b14d813a3d2d1389418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Max_PV: 0
   m_MainCamera: {fileID: 0}
   m_VerticalSpeed: 0
   m_HorizontalSpeed: 5
-  m_margin: 90
+  m_margin: 0
   m_Cadence_Shot: 300
-  m_Bullets: {fileID: 1249014029295417139, guid: 13af16cdf2b94f349a8003c70eb08cb5, type: 3}
+  m_Bullets: {fileID: 1249014029295417136, guid: 13af16cdf2b94f349a8003c70eb08cb5, type: 3}
+  m_score: 0
 --- !u!65 &1307870807
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -413,6 +416,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1307870811
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307870805}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &2013006972
 GameObject:
   m_ObjectHideFlags: 0

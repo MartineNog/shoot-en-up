@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Entity
 {
     [SerializeField] private Camera m_MainCamera;
     [SerializeField] float m_Enemy_Speed;
@@ -10,15 +10,31 @@ public class Enemy : MonoBehaviour
 
     private void Awake()
     {
+        WriteCurrentPV(5);
         m_MainCamera = Camera.main;
     }
 
-    void Start()
+    private void OnCollisionEnter(Collision collision)
     {
-        
+        // Si l'ennemi a toucher le joueur il disparait
+        if (collision.gameObject.tag == "Player")
+        {
+            Destroy(this.gameObject, 0.3f);
+        }
+
+        // Si l'ennemi est touché par un projectile, il perd de la vie
+        if (collision.gameObject.tag == "Bullet")
+        {
+            WriteCurrentPV(ReducePV(6));
+
+            if (ReadCurrentPV() <= 0)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (m_MainCamera.WorldToScreenPoint(transform.position).y > (0 - m_margin))
