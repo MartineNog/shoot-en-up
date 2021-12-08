@@ -40,7 +40,6 @@ public class Player : Entity
         {
             WriteCurrentPV(ReducePV(1));
             UserInterfaceChange?.Invoke();
-            print($"Player = {ReadCurrentPV()}");
             
             // Si le joueur n'a plus de vie, on arrête la partie
             if (ReadCurrentPV() <= 0)
