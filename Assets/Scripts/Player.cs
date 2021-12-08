@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Diagnostics;
 using UnityEngine.Events;
 
@@ -16,6 +17,9 @@ public class Player : Entity
     public int m_score = 0;
     public UnityEvent UserInterfaceChange = new UnityEvent();
 
+    [SerializeField] private int m_nb_Max_Enemies; 
+    private int m_nb_Enemies = 0;
+
     private void Awake()
     {
         WriteCurrentPV(10);
@@ -26,7 +30,7 @@ public class Player : Entity
    
     void Update()
     {
-        PlayerControl(); 
+        PlayerControl();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -37,11 +41,14 @@ public class Player : Entity
             WriteCurrentPV(ReducePV(1));
             UserInterfaceChange?.Invoke();
             print($"Player = {ReadCurrentPV()}");
+            
             // Si le joueur n'a plus de vie, on arrête la partie
             if (ReadCurrentPV() <= 0)
             {
                 Destroy(this.gameObject);
-                print("PERDU!!");
+                PlayerPrefs.SetInt("Fin", -1);  // On sauvegarde l'état de la partie
+                PlayerPrefs.SetInt("Score", m_score);   // On sauvegarde le score
+                SceneManager.LoadScene(2);
             }
         }
     }
@@ -79,8 +86,29 @@ public class Player : Entity
 
     public void OnBulletHit()
     {
+        m_nb_Enemies++;
         m_score++;
         UserInterfaceChange?.Invoke();
+
+        if (m_nb_Enemies >= m_nb_Max_Enemies)
+        {
+            Victoire();
+        }
+
     }
 
+    IEnumerator FinPartie()
+    {
+        yield return 0.1f;
+        PlayerPrefs.SetInt("Fin", -1);  // On sauvegarde l'état de la partie
+        PlayerPrefs.SetInt("Score", m_score);   // On sauvegarde le score
+        SceneManager.LoadScene(2);
+    }
+
+    public void Victoire()
+    {
+        PlayerPrefs.SetInt("Fin", 1);  // On sauvegarde l'état de la partie
+        PlayerPrefs.SetInt("Score", m_score);   // On sauvegarde le score
+        SceneManager.LoadScene(2);
+    }
 }
