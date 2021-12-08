@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
+using UnityEngine.Events;
 
 public class Player : Entity
 {
@@ -13,6 +14,7 @@ public class Player : Entity
     [SerializeField] private Bullet m_Bullets;
     [SerializeField] private Stopwatch m_Stopwatch;
     public int m_score = 0;
+    public UnityEvent UserInterfaceChange = new UnityEvent();
 
     private void Awake()
     {
@@ -33,6 +35,7 @@ public class Player : Entity
         if (collision.gameObject.tag == "Enemy")
         {
             WriteCurrentPV(ReducePV(1));
+            UserInterfaceChange?.Invoke();
             print($"Player = {ReadCurrentPV()}");
             // Si le joueur n'a plus de vie, on arrête la partie
             if (ReadCurrentPV() <= 0)
@@ -68,9 +71,8 @@ public class Player : Entity
             {
                 m_Bullets.transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, 0);
                 Bullet bullet = Instantiate(m_Bullets);
-                bullet.Action.AddListener(OnBulletHit);
+                bullet.OnHit.AddListener(OnBulletHit);
                 m_Stopwatch.Restart();
-                print($"Score = {m_score}");
             }
         }
     }
@@ -78,6 +80,7 @@ public class Player : Entity
     public void OnBulletHit()
     {
         m_score++;
+        UserInterfaceChange?.Invoke();
     }
 
 }

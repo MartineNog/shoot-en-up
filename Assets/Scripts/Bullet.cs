@@ -8,7 +8,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private Camera m_MainCamera;
     [SerializeField] float m_Bullet_Speed;
     [SerializeField] private float m_margin;
-    public UnityEvent Action = new UnityEvent();
+    public UnityEvent OnHit = new UnityEvent();
 
     private void Awake()
     {
@@ -36,7 +36,7 @@ public class Bullet : MonoBehaviour
         // Si le projectile a toucher un ennemi
         if (collision.gameObject.tag == "Enemy")
         {
-            Action?.Invoke();
+            OnHit?.Invoke();
             Destroy(this.gameObject);
         }
     }
