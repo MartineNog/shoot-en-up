@@ -21,14 +21,14 @@ public class BulletBoss : MonoBehaviour
 
     void Update()
     {
-        MoveBullet();
+        if (Boss.Boss_S.m_bulletPatern == false)
+            MoveBullet();
     }
     void MoveBullet()
     {
         if (m_MainCamera.WorldToScreenPoint(transform.position).y > -5)
         {
             transform.position += new Vector3(dir, -1 , 0) * Time.deltaTime * m_Bullet_Speed;
-            //transform.position -= Vector3.up * Time.deltaTime * m_Bullet_Speed;
         }
         else if (m_MainCamera.WorldToScreenPoint(transform.position).y <= -5)
         {

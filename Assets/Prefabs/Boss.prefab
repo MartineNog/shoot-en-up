@@ -113,3 +113,4 @@ MonoBehaviour:
   m_MainCamera: {fileID: 0}
   m_Cadence_Shot: 0.3
   m_Bullets_Boss: {fileID: -8668874415960360125, guid: 38bc00689e9398348b164575be06235b, type: 3}
+  m_Projectiles_BP: {fileID: 1249014029295417139, guid: 38bc00689e9398348b164575be06235b, type: 3}
