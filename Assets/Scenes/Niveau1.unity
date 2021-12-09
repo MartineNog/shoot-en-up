@@ -1369,7 +1369,9 @@ MonoBehaviour:
   UserInterfaceChange:
     m_PersistentCalls:
       m_Calls: []
-  m_nb_Max_Enemies: 15
+  m_nb_Max_Enemies: 20
+  m_nb_Enemies: 0
+  boss: 0
 --- !u!65 &1307870807
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2202,6 +2204,8 @@ MonoBehaviour:
   m_player: {fileID: 1307870805}
   m_enemy: {fileID: 4469149490413400638, guid: 4fb701ae300268641bbd51643de7cbc8, type: 3}
   m_Time_Enemies: 3
+  m_boss: {fileID: 1929886662615752000, guid: 1fa9a57be4eb65343ba9f404ce7458bb, type: 3}
+  m_margin_boss: 0
 --- !u!1 &2135450046
 GameObject:
   m_ObjectHideFlags: 0

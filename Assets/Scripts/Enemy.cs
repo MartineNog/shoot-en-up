@@ -8,9 +8,11 @@ public class Enemy : Entity
     [SerializeField] float m_Enemy_Speed;
     [SerializeField] private float m_margin;
 
+    private int m_PV_enemies = 5;
+
     private void Awake()
     {
-        WriteCurrentPV(5);
+        WriteCurrentPV(m_PV_enemies);
         m_MainCamera = Camera.main;
     }
 

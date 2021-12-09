@@ -39,5 +39,18 @@ public class Bullet : MonoBehaviour
             OnHit?.Invoke();
             Destroy(this.gameObject);
         }
+
+        // Si le projectile a touché le boss
+        if (collision.gameObject.tag == "Boss")
+        {
+            Player.player_S.m_score += 3;
+            Destroy(this.gameObject);
+        }
+
+        // Si le projectile a touché un projectile du boss
+        if (collision.gameObject.tag == "BossBullet")
+        {
+            Destroy(this.gameObject);
+        }
     }
 }

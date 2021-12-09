@@ -7,6 +7,8 @@ using UnityEngine.Events;
 
 public class Player : Entity
 {
+    public static Player player_S;
+
     [SerializeField] private Camera m_MainCamera;
     [SerializeField] private float m_VerticalSpeed;
     [SerializeField] private float m_HorizontalSpeed;
@@ -17,12 +19,14 @@ public class Player : Entity
     public int m_score = 0;
     public UnityEvent UserInterfaceChange = new UnityEvent();
 
-    [SerializeField] private int m_nb_Max_Enemies; 
-    private int m_nb_Enemies = 0;
+    [SerializeField] public int m_nb_Max_Enemies; 
+    public int m_nb_Enemies = 0;
+    public int boss = 0;
 
     private void Awake()
     {
-        WriteCurrentPV(10);
+        player_S = this;
+        WriteCurrentPV(30);
         m_MainCamera = Camera.main;
         m_Stopwatch = new Stopwatch();
         m_Stopwatch.Start();
@@ -40,15 +44,37 @@ public class Player : Entity
         {
             WriteCurrentPV(ReducePV(1));
             UserInterfaceChange?.Invoke();
-            
-            // Si le joueur n'a plus de vie, on arrête la partie
-            if (ReadCurrentPV() <= 0)
-            {
-                Destroy(this.gameObject);
-                PlayerPrefs.SetInt("Fin", -1);  // On sauvegarde l'état de la partie
-                PlayerPrefs.SetInt("Score", m_score);   // On sauvegarde le score
-                SceneManager.LoadScene(2);
-            }
+
+            PlayerIsDead();
+        }
+
+        // Si le joueur est touché par le boss, on réduit sa vie
+        if (collision.gameObject.tag == "Boss")
+        {
+            WriteCurrentPV(ReducePV(3));
+            UserInterfaceChange?.Invoke();
+
+            PlayerIsDead();
+        }
+
+        // Si le joueur est touché par un projectile du boss
+        if (collision.gameObject.tag == "BossBullet")
+        {
+            WriteCurrentPV(ReducePV(1));
+            UserInterfaceChange?.Invoke();
+            PlayerIsDead();
+        }
+    }
+
+    void PlayerIsDead()
+    {
+        // Si le joueur n'a plus de vie, on arrête la partie
+        if (ReadCurrentPV() <= 0)
+        {
+            Destroy(this.gameObject);
+            PlayerPrefs.SetInt("Fin", -1);  // On sauvegarde l'état de la partie
+            PlayerPrefs.SetInt("Score", m_score);   // On sauvegarde le score
+            SceneManager.LoadScene(2);  // On charge la page de fin de partie
         }
     }
 
@@ -89,9 +115,10 @@ public class Player : Entity
         m_score++;
         UserInterfaceChange?.Invoke();
 
-        if (m_nb_Enemies >= m_nb_Max_Enemies)
+        if (m_nb_Enemies >= m_nb_Max_Enemies && boss == 0)
         {
-            Victoire();
+            boss = 1;
+            //Victoire();
         }
 
     }
