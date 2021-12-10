@@ -10,16 +10,23 @@ public class Player : Entity
     public static Player player_S;
 
     [SerializeField] private Camera m_MainCamera;
+
+    // Option pour le déplacement
     [SerializeField] private float m_VerticalSpeed;
     [SerializeField] private float m_HorizontalSpeed;
     [SerializeField] private float m_Margin_Horizontale;
     [SerializeField] private float m_Margin_Verticale;
+
+    // Options pour le tir du joueur
     [SerializeField] private float m_Cadence_Shot;
     [SerializeField] private Bullet m_Bullets;
     [SerializeField] private Stopwatch m_Stopwatch;
+
+    // Option pour l'affichage du score et de la vie sur le canvas
     public int m_score = 0;
     public UnityEvent UserInterfaceChange = new UnityEvent();
 
+    //Gestion d'apparition du boss
     [SerializeField] public int m_nb_Max_Enemies; 
     public int m_nb_Enemies = 0;
     public int boss = 0;
@@ -45,7 +52,6 @@ public class Player : Entity
         {
             WriteCurrentPV(ReducePV(1));
             UserInterfaceChange?.Invoke();
-
             PlayerIsDead();
         }
 
@@ -54,7 +60,6 @@ public class Player : Entity
         {
             WriteCurrentPV(ReducePV(3));
             UserInterfaceChange?.Invoke();
-
             PlayerIsDead();
         }
 

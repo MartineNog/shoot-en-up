@@ -40,4 +40,9 @@ public class FinPartie : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
+    public void ResetLevel()
+    {
+        SceneManager.LoadScene(1);
+    }
 }
