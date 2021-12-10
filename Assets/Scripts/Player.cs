@@ -12,7 +12,8 @@ public class Player : Entity
     [SerializeField] private Camera m_MainCamera;
     [SerializeField] private float m_VerticalSpeed;
     [SerializeField] private float m_HorizontalSpeed;
-    [SerializeField] private float m_margin;
+    [SerializeField] private float m_Margin_Horizontale;
+    [SerializeField] private float m_Margin_Verticale;
     [SerializeField] private float m_Cadence_Shot;
     [SerializeField] private Bullet m_Bullets;
     [SerializeField] private Stopwatch m_Stopwatch;
@@ -80,23 +81,47 @@ public class Player : Entity
 
     void PlayerControl()
     {
+        // Déplacement vers la gauche du personnage
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             // Eviter la sortie d'écran vers la gauche ( si on sort de l'écran vers la gauche on arrive dans des valeurs négatives)
-            if (m_MainCamera.WorldToScreenPoint(transform.position).x > (0 + m_margin))
+            if (m_MainCamera.WorldToScreenPoint(transform.position).x > (0 + m_Margin_Horizontale))
             {
                 transform.position += Vector3.left * Time.deltaTime * m_HorizontalSpeed;
             }
         }
+
+        // Déplacement vers la droite du personnage
         if (Input.GetKey(KeyCode.RightArrow))
         {
             // Eviter la sortie d'écran vers la droite ( si on sort de l'écran vers la droite on arrive dans des valeurs supérieur à la taille de l'écran)
-            if (m_MainCamera.WorldToScreenPoint(transform.position).x < (Screen.width - m_margin))
+            if (m_MainCamera.WorldToScreenPoint(transform.position).x < (Screen.width - m_Margin_Horizontale))
             {
                 transform.position += Vector3.right * Time.deltaTime * m_HorizontalSpeed;
             }
         }
 
+        // Déplacement vers le haut du personnage
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            // Eviter la sortie d'écran vers le haut
+            if (m_MainCamera.WorldToScreenPoint(transform.position).y <(Screen.height - m_Margin_Verticale))
+            {
+                transform.position += Vector3.up * Time.deltaTime * m_VerticalSpeed;
+            }
+        }
+
+        // Déplacement vers le bas du personnage
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            // Eviter la sortie d'écran vers le bas
+            if (m_MainCamera.WorldToScreenPoint(transform.position).y > (0 + m_Margin_Verticale))
+            {
+                transform.position += Vector3.down * Time.deltaTime * m_VerticalSpeed;
+            }
+        }
+
+        // Le personnage tire à l'appuie sur la touche espace
         if (Input.GetKey(KeyCode.Space))
         {
             if (m_Stopwatch.Elapsed.Milliseconds >= m_Cadence_Shot)

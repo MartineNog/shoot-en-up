@@ -1106,13 +1106,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.02643413, y: -0, z: -0, w: 0.9996506}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 3.34, z: -9.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -3.029, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1141533009
 GameObject:
   m_ObjectHideFlags: 0
@@ -1360,9 +1360,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Max_PV: 0
   m_MainCamera: {fileID: 0}
-  m_VerticalSpeed: 0
+  m_VerticalSpeed: 5
   m_HorizontalSpeed: 5
-  m_margin: 0
+  m_Margin_Horizontale: 30
+  m_Margin_Verticale: 25
   m_Cadence_Shot: 300
   m_Bullets: {fileID: 1249014029295417136, guid: 13af16cdf2b94f349a8003c70eb08cb5, type: 3}
   m_score: 0
