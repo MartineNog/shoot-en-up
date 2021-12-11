@@ -11,6 +11,11 @@ public class UserInterface : MonoBehaviour
     [SerializeField] private Slider m_Slider_PV;
     [SerializeField] private Player player;
     [SerializeField] private GameObject m_Pause;
+    
+    // Bonus
+    [SerializeField] private GameObject m_BonusCadenceBullet;
+    [SerializeField] private GameObject m_BonusSpeedBullet;
+    [SerializeField] private GameObject m_BonusSpeedPlayer;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +27,11 @@ public class UserInterface : MonoBehaviour
         m_Slider_PV.value = player.ReadCurrentPV();
 
         m_Pause.SetActive(false);
+
+        m_BonusCadenceBullet.SetActive(false);
+        m_BonusSpeedBullet.SetActive(false);
+        m_BonusSpeedPlayer.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -29,6 +39,7 @@ public class UserInterface : MonoBehaviour
     {
         player.UserInterfaceChange.AddListener(OnHPChange);
         player.UserInterfaceChange.AddListener(OnScoreChange);
+        player.UserInterfaceChange.AddListener(OnBonus);
     }
 
     public void  OnScoreChange()
@@ -40,5 +51,12 @@ public class UserInterface : MonoBehaviour
     {
         // On change la valeur des PV
         m_Slider_PV.value = player.ReadCurrentPV();
+    }
+
+    public void OnBonus()
+    {
+        m_BonusCadenceBullet.SetActive(player.m_BonusCadenceBullet);
+        m_BonusSpeedBullet.SetActive(player.m_BonusSpeedBullet);
+        m_BonusSpeedPlayer.SetActive(player.m_BonusSpeedPlayer);
     }
 }

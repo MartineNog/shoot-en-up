@@ -12,8 +12,7 @@ public class Player : Entity
     [SerializeField] private Camera m_MainCamera;
 
     // Option pour le déplacement
-    [SerializeField] private float m_VerticalSpeed;
-    [SerializeField] private float m_HorizontalSpeed;
+    [SerializeField] private float m_PlayerSpeed;
     [SerializeField] private float m_Margin_Horizontale;
     [SerializeField] private float m_Margin_Verticale;
 
@@ -21,6 +20,7 @@ public class Player : Entity
     [SerializeField] private float m_Cadence_Shot;
     [SerializeField] private Bullet m_Bullets;
     [SerializeField] private Stopwatch m_Stopwatch;
+    public float m_BulletSpeed = 3;
 
     // Option pour l'affichage du score et de la vie sur le canvas
     public int m_score = 0;
@@ -31,6 +31,12 @@ public class Player : Entity
     public int m_nb_Enemies = 0;
     public int boss = 0;
 
+    // Gestion des bonus
+    [SerializeField] private GameObject m_Shield;
+    public bool m_BonusCadenceBullet = false;
+    public bool m_BonusSpeedBullet = false;
+    public bool m_BonusSpeedPlayer = false;
+
     private void Awake()
     {
         player_S = this;
@@ -38,6 +44,7 @@ public class Player : Entity
         m_MainCamera = Camera.main;
         m_Stopwatch = new Stopwatch();
         m_Stopwatch.Start();
+        m_Shield.SetActive(false);
     }
    
     void Update()
@@ -72,6 +79,38 @@ public class Player : Entity
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        // Si le joueur récupère le bonus d'augmentation de vitesse du joueur
+        if (other.gameObject.tag == "BonusSpeedPlayer")
+        {
+            Destroy(other.gameObject);
+            StartCoroutine(BonusSpeedPlayer());
+        }
+
+        // Si le joueur récupère le bonus du bouclier
+        if (other.gameObject.tag == "BonusShield")
+        {
+            Destroy(other.gameObject);
+            StartCoroutine(BonusShield());
+        }
+
+        // Si le joueur récupère le bonus d'augmentation de la cadence de tir
+        if (other.gameObject.tag == "BonusBullet")
+        {
+            Destroy(other.gameObject);
+            StartCoroutine(BonusBullet());
+        }
+
+        // Si le joueur récupère le bonus d'augmentation de la vitesse des balles
+        if (other.gameObject.tag == "BonusPowerBullet")
+        {
+            Destroy(other.gameObject);
+            StartCoroutine(BonusPowerBullet());
+
+        }
+    }
+
     void PlayerIsDead()
     {
         // Si le joueur n'a plus de vie, on arrête la partie
@@ -92,7 +131,7 @@ public class Player : Entity
             // Eviter la sortie d'écran vers la gauche ( si on sort de l'écran vers la gauche on arrive dans des valeurs négatives)
             if (m_MainCamera.WorldToScreenPoint(transform.position).x > (0 + m_Margin_Horizontale))
             {
-                transform.position += Vector3.left * Time.deltaTime * m_HorizontalSpeed;
+                transform.position += Vector3.left * Time.deltaTime * m_PlayerSpeed;
             }
         }
 
@@ -102,7 +141,7 @@ public class Player : Entity
             // Eviter la sortie d'écran vers la droite ( si on sort de l'écran vers la droite on arrive dans des valeurs supérieur à la taille de l'écran)
             if (m_MainCamera.WorldToScreenPoint(transform.position).x < (Screen.width - m_Margin_Horizontale))
             {
-                transform.position += Vector3.right * Time.deltaTime * m_HorizontalSpeed;
+                transform.position += Vector3.right * Time.deltaTime * m_PlayerSpeed;
             }
         }
 
@@ -112,7 +151,7 @@ public class Player : Entity
             // Eviter la sortie d'écran vers le haut
             if (m_MainCamera.WorldToScreenPoint(transform.position).y <(Screen.height - m_Margin_Verticale))
             {
-                transform.position += Vector3.up * Time.deltaTime * m_VerticalSpeed;
+                transform.position += Vector3.up * Time.deltaTime * m_PlayerSpeed;
             }
         }
 
@@ -122,7 +161,7 @@ public class Player : Entity
             // Eviter la sortie d'écran vers le bas
             if (m_MainCamera.WorldToScreenPoint(transform.position).y > (0 + m_Margin_Verticale))
             {
-                transform.position += Vector3.down * Time.deltaTime * m_VerticalSpeed;
+                transform.position += Vector3.down * Time.deltaTime * m_PlayerSpeed;
             }
         }
 
@@ -132,6 +171,7 @@ public class Player : Entity
             if (m_Stopwatch.Elapsed.Milliseconds >= m_Cadence_Shot)
             {
                 m_Bullets.transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, 0);
+                m_Bullets.m_Bullet_Speed = m_BulletSpeed;
                 Bullet bullet = Instantiate(m_Bullets);
                 bullet.OnHit.AddListener(OnBulletHit);
                 m_Stopwatch.Restart();
@@ -153,6 +193,12 @@ public class Player : Entity
 
     }
 
+    public void Victoire()
+    {
+        PlayerPrefs.SetInt("Fin", 1);  // On sauvegarde l'état de la partie
+        PlayerPrefs.SetInt("Score", m_score);   // On sauvegarde le score
+        SceneManager.LoadScene(2);
+    }
     IEnumerator FinPartie()
     {
         yield return 0.1f;
@@ -161,10 +207,50 @@ public class Player : Entity
         SceneManager.LoadScene(2);
     }
 
-    public void Victoire()
+    IEnumerator BonusSpeedPlayer()
     {
-        PlayerPrefs.SetInt("Fin", 1);  // On sauvegarde l'état de la partie
-        PlayerPrefs.SetInt("Score", m_score);   // On sauvegarde le score
-        SceneManager.LoadScene(2);
+        float time = Random.Range(10f, 20f);
+        float playerSpeed = m_PlayerSpeed;
+        m_PlayerSpeed += 3;
+        m_BonusSpeedPlayer = true;
+        UserInterfaceChange?.Invoke();
+        yield return new WaitForSeconds(time);
+        m_PlayerSpeed = playerSpeed;
+        m_BonusSpeedPlayer = false;
+        UserInterfaceChange?.Invoke();
     }
+
+    IEnumerator BonusPowerBullet()
+    {
+        float time = Random.Range(10f, 20f);
+        m_BulletSpeed = 6;
+        m_BonusSpeedBullet = true;
+        UserInterfaceChange?.Invoke();
+        yield return new WaitForSeconds(time);
+        m_BulletSpeed = 3;
+        m_BonusSpeedBullet = false;
+        UserInterfaceChange?.Invoke();
+    }
+
+    IEnumerator BonusBullet()
+    {
+        float time = Random.Range(10f, 20f);
+        float cadenceShot = m_Cadence_Shot;
+        m_Cadence_Shot /= 2;
+        m_BonusCadenceBullet = true;
+        UserInterfaceChange?.Invoke();
+        yield return new WaitForSeconds(time);
+        m_Cadence_Shot = cadenceShot;
+        m_BonusCadenceBullet = false;
+        UserInterfaceChange?.Invoke();
+    }
+
+    IEnumerator BonusShield()
+    {
+        float time = Random.Range(10f, 20f);
+        m_Shield.SetActive(true);
+        yield return new WaitForSeconds(time);
+        m_Shield.SetActive(false);
+    }
+
 }

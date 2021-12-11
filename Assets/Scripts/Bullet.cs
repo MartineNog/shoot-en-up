@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private Camera m_MainCamera;
-    [SerializeField] float m_Bullet_Speed;
+    [SerializeField] public float m_Bullet_Speed;
     [SerializeField] private float m_margin;
     public UnityEvent OnHit = new UnityEvent();
 

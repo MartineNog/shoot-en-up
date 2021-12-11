@@ -29,8 +29,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1249014029295417139}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.039265, y: 6.122585, z: 0}
-  m_LocalScale: {x: 0.47196746, y: 0.47196746, z: 0.47196746}
+  m_LocalPosition: {x: -0.67200273, y: 0.7183789, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_MainCamera: {fileID: 0}
-  m_Bullet_Speed: 3
+  m_Bullet_Speed: 6
   m_margin: 30
   OnHit:
     m_PersistentCalls:

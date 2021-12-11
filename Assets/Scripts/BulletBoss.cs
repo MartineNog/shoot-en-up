@@ -50,6 +50,14 @@ public class BulletBoss : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        // Si le projectile touche le bouclier
+        if (other.gameObject.tag == "Shield")
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
 
 }
