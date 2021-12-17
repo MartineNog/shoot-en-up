@@ -165,10 +165,6 @@ public class Boss : Entity
                 m_mort = true;
                 Player.player_S.m_score += 50;
 
-                /*Instantiate(m_Boss_Particules, new Vector3(transform.position.x, transform.position.y - 5f, 0), Quaternion.identity);
-                Destroy(this.gameObject, 2f);
-                Player.player_S.Victoire();*/
-
                 StartCoroutine(ExplosionBoss());
             }
         }

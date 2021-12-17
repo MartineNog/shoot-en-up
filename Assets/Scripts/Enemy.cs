@@ -69,7 +69,6 @@ public class Enemy : Entity
         // Si le projectile touche le bouclier
         if (other.gameObject.tag == "Shield")
         {
-            print("BOUH!!");
             Destroy(this.gameObject);
         }
     }

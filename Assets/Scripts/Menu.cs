@@ -5,6 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
+
+    [SerializeField] private AudioSource m_Audio_Source;
+    [SerializeField] private AudioClip m_Musique_Menu;
+
+    private void Awake()
+    {
+        m_Audio_Source.clip = m_Musique_Menu;
+        m_Audio_Source.Play();
+    }
+
     // A l'appui du bouton Play
     public void PlayGame()
     {

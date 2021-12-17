@@ -38,8 +38,9 @@ public class Player : Entity
     public bool m_BonusSpeedPlayer = false;
 
     // Gestion du son
-    [SerializeField] private AudioSource m_Audio_Source;
-    [SerializeField] private AudioClip m_Musique_Jeu;
+    public int Musique = 1;
+    public int EffetSonore = 0;
+    public bool Changement = false;
 
     private void Awake()
     {
@@ -49,9 +50,6 @@ public class Player : Entity
         m_Stopwatch = new Stopwatch();
         m_Stopwatch.Start();
         m_Shield.SetActive(false);
-
-        m_Audio_Source.clip = m_Musique_Jeu;
-        m_Audio_Source.Play();
     }
    
     void Update()
@@ -65,6 +63,7 @@ public class Player : Entity
         if (collision.gameObject.tag == "Enemy")
         {
             WriteCurrentPV(ReducePV(1));
+            EffetSonore = 1;
             UserInterfaceChange?.Invoke();
             PlayerIsDead();
         }
@@ -73,6 +72,7 @@ public class Player : Entity
         if (collision.gameObject.tag == "Boss")
         {
             WriteCurrentPV(ReducePV(3));
+            EffetSonore = 1;
             UserInterfaceChange?.Invoke();
             PlayerIsDead();
         }
@@ -81,6 +81,7 @@ public class Player : Entity
         if (collision.gameObject.tag == "BossBullet")
         {
             WriteCurrentPV(ReducePV(1));
+            EffetSonore = 1;
             UserInterfaceChange?.Invoke();
             PlayerIsDead();
         }
@@ -92,6 +93,7 @@ public class Player : Entity
         // Si le joueur récupère le bonus d'augmentation de vitesse du joueur
         if (other.gameObject.tag == "BonusSpeedPlayer")
         {
+            EffetSonore = 4;
             Destroy(other.gameObject);
             StartCoroutine(BonusSpeedPlayer());
         }
@@ -106,6 +108,7 @@ public class Player : Entity
         // Si le joueur récupère le bonus d'augmentation de la cadence de tir
         if (other.gameObject.tag == "BonusBullet")
         {
+            EffetSonore = 4;
             Destroy(other.gameObject);
             StartCoroutine(BonusBullet());
         }
@@ -113,6 +116,7 @@ public class Player : Entity
         // Si le joueur récupère le bonus d'augmentation de la vitesse des balles
         if (other.gameObject.tag == "BonusPowerBullet")
         {
+            EffetSonore = 4;
             Destroy(other.gameObject);
             StartCoroutine(BonusPowerBullet());
 
@@ -187,11 +191,12 @@ public class Player : Entity
     public void OnBulletHit()
     {
         m_nb_Enemies++;
-        m_score++;
         UserInterfaceChange?.Invoke();
 
         if (m_nb_Enemies >= m_nb_Max_Enemies && boss == 0)
         {
+            Musique = 2;
+            Changement = true;
             boss = 1;
         }
 
@@ -252,10 +257,15 @@ public class Player : Entity
 
     IEnumerator BonusShield()
     {
+        int musiqueAvant = Musique;
+        Musique = 3;
+        Changement = true;
         float time = Random.Range(10f, 20f);
         m_Shield.SetActive(true);
         yield return new WaitForSeconds(time);
         m_Shield.SetActive(false);
+        Musique = musiqueAvant;
+        Changement = true;
     }
 
 }
