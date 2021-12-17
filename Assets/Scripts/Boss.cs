@@ -31,6 +31,9 @@ public class Boss : Entity
     private Vector3 m_startPoint;
     private const float m_raduis = 1F;
 
+    [SerializeField] private GameObject m_Boss_Particules;
+    private bool m_mort = false;
+
     private void Awake()
     {
         Boss_S = this;  // Initialiser le Singleton
@@ -45,7 +48,8 @@ public class Boss : Entity
 
     void Update()
     {
-        Move();
+        if (!m_mort)
+            Move();
     }
 
     private void Move()
@@ -72,7 +76,7 @@ public class Boss : Entity
 
     IEnumerator Shot()
     {
-        while (Application.isPlaying)
+        while (Application.isPlaying && !m_mort)
         {
             if (!m_is_Shot)     // Le boss ne fait que se déplacer
             {
@@ -97,7 +101,7 @@ public class Boss : Entity
                 m_Speed = Random.Range(2.5f, 5.5f);
                 m_Cadence_Shot = Random.Range(0.1f, 0.5f);
                 
-                m_Bullets_Boss.transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, 0);
+                m_Bullets_Boss.transform.position = new Vector3(transform.position.x, transform.position.y - 1f, 0);
                 Instantiate(m_Bullets_Boss);
                 
                 m_nb_Bullets++;
@@ -109,7 +113,7 @@ public class Boss : Entity
                 m_Speed = Random.Range(1.5f, 3.5f);
                 m_Cadence_Shot = Random.Range(0.7f, 2.7f);
                 
-                m_startPoint = transform.position;
+                m_startPoint = new Vector3(transform.position.x, transform.position.y -1f, 0);
                 m_nb_projectiles_BP = Random.Range(20, 40);
                 m_Speed_projectiles_BP = Random.Range(1.5f, 4.5f);
 
@@ -154,13 +158,27 @@ public class Boss : Entity
         if (collision.gameObject.tag == "Bullet")
         {
             WriteCurrentPV(ReducePV(5));
+            transform.localScale = new Vector3(transform.localScale.x + 0.025f, transform.localScale.y + 0.025f, transform.localScale.z + 0.025f);
             // Si le boss n'a plus de vie
             if (ReadCurrentPV() <= 0)
             {
+                m_mort = true;
                 Player.player_S.m_score += 50;
-                Destroy(this.gameObject);
-                Player.player_S.Victoire();
+
+                /*Instantiate(m_Boss_Particules, new Vector3(transform.position.x, transform.position.y - 5f, 0), Quaternion.identity);
+                Destroy(this.gameObject, 2f);
+                Player.player_S.Victoire();*/
+
+                StartCoroutine(ExplosionBoss());
             }
         }
+    }
+
+    IEnumerator ExplosionBoss()
+    {
+        Instantiate(m_Boss_Particules, new Vector3(transform.position.x, transform.position.y - 5f, 0), Quaternion.identity);
+        yield return new WaitForSeconds(1f);
+        Destroy(this.gameObject);
+        Player.player_S.Victoire();
     }
 }

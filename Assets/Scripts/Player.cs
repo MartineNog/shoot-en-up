@@ -37,6 +37,10 @@ public class Player : Entity
     public bool m_BonusSpeedBullet = false;
     public bool m_BonusSpeedPlayer = false;
 
+    // Gestion du son
+    [SerializeField] private AudioSource m_Audio_Source;
+    [SerializeField] private AudioClip m_Musique_Jeu;
+
     private void Awake()
     {
         player_S = this;
@@ -45,6 +49,9 @@ public class Player : Entity
         m_Stopwatch = new Stopwatch();
         m_Stopwatch.Start();
         m_Shield.SetActive(false);
+
+        m_Audio_Source.clip = m_Musique_Jeu;
+        m_Audio_Source.Play();
     }
    
     void Update()
@@ -79,6 +86,7 @@ public class Player : Entity
         }
     }
 
+    // Récupération de bonus
     private void OnTriggerEnter(Collider other)
     {
         // Si le joueur récupère le bonus d'augmentation de vitesse du joueur
@@ -116,10 +124,7 @@ public class Player : Entity
         // Si le joueur n'a plus de vie, on arrête la partie
         if (ReadCurrentPV() <= 0)
         {
-            Destroy(this.gameObject);
-            PlayerPrefs.SetInt("Fin", -1);  // On sauvegarde l'état de la partie
-            PlayerPrefs.SetInt("Score", m_score);   // On sauvegarde le score
-            SceneManager.LoadScene(2);  // On charge la page de fin de partie
+            StartCoroutine(FinPartie());
         }
     }
 
@@ -188,7 +193,6 @@ public class Player : Entity
         if (m_nb_Enemies >= m_nb_Max_Enemies && boss == 0)
         {
             boss = 1;
-            //Victoire();
         }
 
     }
@@ -201,9 +205,10 @@ public class Player : Entity
     }
     IEnumerator FinPartie()
     {
-        yield return 0.1f;
+        yield return new WaitForSeconds(1f);
         PlayerPrefs.SetInt("Fin", -1);  // On sauvegarde l'état de la partie
         PlayerPrefs.SetInt("Score", m_score);   // On sauvegarde le score
+        Destroy(this.gameObject);
         SceneManager.LoadScene(2);
     }
 

@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1929886662615752000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 8.735892, z: 0}
+  m_LocalPosition: {x: 0, y: 8.745077, z: 0}
   m_LocalScale: {x: 3.421553, y: 1.3819866, z: 3.421553}
   m_Children:
   - {fileID: 2907159326744993726}
@@ -116,6 +116,7 @@ MonoBehaviour:
   m_Bullets_Boss: {fileID: -8668874415960360125, guid: 38bc00689e9398348b164575be06235b, type: 3}
   m_bulletPatern: 0
   m_Projectiles_BP: {fileID: 1249014029295417139, guid: 38bc00689e9398348b164575be06235b, type: 3}
+  m_Boss_Particules: {fileID: 2527283673098130667, guid: e53d7ba233985174bac5bdd91041d8f0, type: 3}
 --- !u!1001 &3446088777890805845
 PrefabInstance:
   m_ObjectHideFlags: 0
