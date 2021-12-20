@@ -1,14 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : Entity
 {
+    [Header("Caméra principale")]
     [SerializeField] private Camera m_MainCamera;
+
+    [Header("Information ennemies")]
     [SerializeField] float m_Enemy_Speed;
     [SerializeField] private float m_margin;
 
-    // Bonus
+    [Header("Bonus")]
     [SerializeField] private GameObject m_Bonus_SpeedPlayer;
     [SerializeField] private GameObject m_Bonus_CadenceBalle;
     [SerializeField] private GameObject m_Bonus_SpeedBalle;
@@ -18,10 +19,14 @@ public class Enemy : Entity
 
     private void Awake()
     {
+        // Initialiser leur point de vie
         WriteCurrentPV(m_PV_enemies);
+
+        // Initialiser la caméra principale
         m_MainCamera = Camera.main;
     }
 
+    // Lorsque l'ennemie rentre en collision avec autrui
     private void OnCollisionEnter(Collision collision)
     {
         // Si l'ennemi a touché le joueur il disparait
@@ -30,40 +35,50 @@ public class Enemy : Entity
             Destroy(this.gameObject, 0.3f);
         }
 
-        // Si l'ennemi est touché par un projectile, il perd de la vie
+        // Si l'ennemi est touché par un projectile
         if (collision.gameObject.tag == "Bullet")
         {
+            // On réduit sa vie
             WriteCurrentPV(ReducePV(6));
 
+            // Si l'ennemie est n'a plus de vie 
             if (ReadCurrentPV() <= 0)
             {
-                int rand = Random.Range(0, 80);     // Calculer un nombre aléatoire pour savoir s'il donne un bonus ou non
-                if (rand == 16)  // Instancier le bonus augmentant la vitesse du joueur
+                // Calculer un nombre aléatoire pour savoir s'il donne un bonus ou non
+                int rand = Random.Range(0, 80);  
+                
+                // Instancier le bonus augmentant la vitesse du joueur
+                if (rand == 16)  
                 {
                     m_Bonus_SpeedPlayer.transform.position = transform.position;
                     Instantiate(m_Bonus_SpeedPlayer);
                 }
-                else if (rand == 32) // Instancier le bonus du bouclier du joueur 
+                // Instancier le bonus du bouclier du joueur
+                else if (rand == 32)  
                 {
                     m_BonusShield.transform.position = transform.position;
                     Instantiate(m_BonusShield);
                 }
-                else if (rand == 48) // Instancier le bonus augmentant la cadence de tir
+                // Instancier le bonus augmentant la cadence de tir
+                else if (rand == 48) 
                 {
                     m_Bonus_CadenceBalle.transform.position = transform.position;
                     Instantiate(m_Bonus_CadenceBalle);
                 }
-                else if (rand == 64) // Instancier le bonus augmentant la force de tir
+                // Instancier le bonus augmentant la force de tir
+                else if (rand == 64)
                 {
                     m_Bonus_SpeedBalle.transform.position = transform.position;
                     Instantiate(m_Bonus_SpeedBalle);
                 }
 
+                // On le détruit
                 Destroy(this.gameObject);
             }
         }
     }
 
+    // Lorsque l'ennemie rentre en collision avec un objet
     private void OnTriggerEnter(Collider other)
     {
         // Si le projectile touche le bouclier
@@ -75,14 +90,19 @@ public class Enemy : Entity
 
     void Update()
     {
+        // On fait descendre l'ennemie verticalement
         if (m_MainCamera.WorldToScreenPoint(transform.position).y > (0 - m_margin))
         {
             transform.position -= Vector3.up * Time.deltaTime * m_Enemy_Speed;
         }
+        // Si l'ennemie n'a pas été détruit est quitte l'écran
         else if (m_MainCamera.WorldToScreenPoint(transform.position).y <= (0 - m_margin))
         {
+            // On diminue le score et on met à jour l'interface utilisateur
             Player.player_S.m_score--;
             Player.player_S.UserInterfaceChange?.Invoke();
+
+            // On détruit l'ennemie
             Destroy(this.gameObject);
         }
     }
