@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 public class Player : Entity
 {
-    public static Player player_S;
+    public static Player player_S;  // Pour faire un Singleton
 
     [SerializeField] private Camera m_MainCamera;
 
@@ -36,6 +36,8 @@ public class Player : Entity
     public bool m_BonusCadenceBullet = false;
     public bool m_BonusSpeedBullet = false;
     public bool m_BonusSpeedPlayer = false;
+    public bool m_BonusShield = false;
+    public int MusiqueAvant = 0;
 
     // Gestion du son
     public int Musique = 1;
@@ -50,6 +52,8 @@ public class Player : Entity
         m_Stopwatch = new Stopwatch();
         m_Stopwatch.Start();
         m_Shield.SetActive(false);
+
+        m_nb_Max_Enemies = Random.Range(40, 60);
     }
    
     void Update()
@@ -93,33 +97,44 @@ public class Player : Entity
         // Si le joueur récupère le bonus d'augmentation de vitesse du joueur
         if (other.gameObject.tag == "BonusSpeedPlayer")
         {
-            EffetSonore = 4;
-            Destroy(other.gameObject);
-            StartCoroutine(BonusSpeedPlayer());
+            if (!m_BonusSpeedPlayer)
+            {
+                EffetSonore = 4;
+                Destroy(other.gameObject);
+                StartCoroutine(BonusSpeedPlayer());
+            }
         }
 
         // Si le joueur récupère le bonus du bouclier
         if (other.gameObject.tag == "BonusShield")
         {
-            Destroy(other.gameObject);
-            StartCoroutine(BonusShield());
+            if (!m_BonusShield)
+            {
+                Destroy(other.gameObject);
+                StartCoroutine(BonusShield());
+            } 
         }
 
         // Si le joueur récupère le bonus d'augmentation de la cadence de tir
         if (other.gameObject.tag == "BonusBullet")
         {
-            EffetSonore = 4;
-            Destroy(other.gameObject);
-            StartCoroutine(BonusBullet());
+            if (!m_BonusCadenceBullet)
+            {
+                EffetSonore = 4;
+                Destroy(other.gameObject);
+                StartCoroutine(BonusBullet());
+            }
         }
 
         // Si le joueur récupère le bonus d'augmentation de la vitesse des balles
         if (other.gameObject.tag == "BonusPowerBullet")
         {
-            EffetSonore = 4;
-            Destroy(other.gameObject);
-            StartCoroutine(BonusPowerBullet());
-
+            if (!m_BonusSpeedBullet)
+            {
+                EffetSonore = 4;
+                Destroy(other.gameObject);
+                StartCoroutine(BonusPowerBullet());
+            }
         }
     }
 
@@ -257,14 +272,16 @@ public class Player : Entity
 
     IEnumerator BonusShield()
     {
-        int musiqueAvant = Musique;
+        m_BonusShield = true;
+        MusiqueAvant = Musique;
         Musique = 3;
         Changement = true;
         float time = Random.Range(10f, 20f);
         m_Shield.SetActive(true);
         yield return new WaitForSeconds(time);
         m_Shield.SetActive(false);
-        Musique = musiqueAvant;
+        m_BonusShield = false;
+        Musique = MusiqueAvant;
         Changement = true;
     }
 

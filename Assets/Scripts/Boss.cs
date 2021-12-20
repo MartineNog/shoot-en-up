@@ -10,7 +10,7 @@ public class Boss : Entity
     public static Boss Boss_S;
 
     [SerializeField] private Camera m_MainCamera;
-    private int m_PV_boss = 30;
+    private int m_PV_boss = 50;
     private float m_Speed = 2;
     private Vector3 m_direction_deplacement = Vector3.left;
 

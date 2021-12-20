@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
 {
+    [SerializeField] private Text m_High_Score;
+
     [SerializeField] private GameObject m_Panel_Menu;
     [SerializeField] private GameObject m_Panel_Commandes;
     [SerializeField] private GameObject m_Panel_Credits;
@@ -14,6 +17,8 @@ public class Menu : MonoBehaviour
 
     private void Awake()
     {
+        m_High_Score.text = "High Score = " + PlayerPrefs.GetInt("HighScore");
+
         m_Panel_Menu.SetActive(true);
         m_Panel_Commandes.SetActive(false);
         m_Panel_Credits.SetActive(false);

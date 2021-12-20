@@ -37,23 +37,23 @@ public class Enemy : Entity
 
             if (ReadCurrentPV() <= 0)
             {
-                int rand = Random.Range(0, 20);     // Calculer un nombre aléatoire pour savoir s'il donne un bonus ou non
-                if (rand == 4)  // Instancier le bonus augmentant la vitesse du joueur
+                int rand = Random.Range(0, 80);     // Calculer un nombre aléatoire pour savoir s'il donne un bonus ou non
+                if (rand == 16)  // Instancier le bonus augmentant la vitesse du joueur
                 {
                     m_Bonus_SpeedPlayer.transform.position = transform.position;
                     Instantiate(m_Bonus_SpeedPlayer);
                 }
-                else if (rand == 8) // Instancier le bonus du bouclier du joueur 
+                else if (rand == 32) // Instancier le bonus du bouclier du joueur 
                 {
                     m_BonusShield.transform.position = transform.position;
                     Instantiate(m_BonusShield);
                 }
-                else if (rand == 12) // Instancier le bonus augmentant la cadence de tir
+                else if (rand == 48) // Instancier le bonus augmentant la cadence de tir
                 {
                     m_Bonus_CadenceBalle.transform.position = transform.position;
                     Instantiate(m_Bonus_CadenceBalle);
                 }
-                else if (rand == 16) // Instancier le bonus augmentant la force de tir
+                else if (rand == 64) // Instancier le bonus augmentant la force de tir
                 {
                     m_Bonus_SpeedBalle.transform.position = transform.position;
                     Instantiate(m_Bonus_SpeedBalle);
@@ -81,6 +81,8 @@ public class Enemy : Entity
         }
         else if (m_MainCamera.WorldToScreenPoint(transform.position).y <= (0 - m_margin))
         {
+            Player.player_S.m_score--;
+            Player.player_S.UserInterfaceChange?.Invoke();
             Destroy(this.gameObject);
         }
     }

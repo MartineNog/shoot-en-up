@@ -9,6 +9,7 @@ public class FinPartie : MonoBehaviour
     // Récupérer l'état du jeu et le score
     private int m_fin;
     private int m_score;
+    private int m_high_score;
 
     [SerializeField] private GameObject m_panel;
     [SerializeField] private Text m_Text_Titre;
@@ -30,6 +31,11 @@ public class FinPartie : MonoBehaviour
         m_panel.SetActive(true);
         m_fin = PlayerPrefs.GetInt("Fin");
         m_score = PlayerPrefs.GetInt("Score");
+        m_high_score = PlayerPrefs.GetInt("HighScore");
+        if (m_score >= m_high_score)
+        {
+            PlayerPrefs.SetInt("HighScore", m_score);
+        }
 
         m_Fox_Win.SetActive(false);
         m_Fox_Fail.SetActive(false);

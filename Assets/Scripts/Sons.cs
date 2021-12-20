@@ -45,22 +45,27 @@ public class Sons : MonoBehaviour
                 m_Audio_Source.clip = m_Audio_Clip_Tmp;
                 m_Audio_Source.Play();
             }
-            
-
-            
         }
 
-        if (Player.player_S.Musique == 1 && Player.player_S.Changement)
+        if (Player.player_S.Musique == 1 && Player.player_S.Changement && !Player.player_S.m_BonusShield)
         {
             m_Audio_Source.clip = m_Musique_Jeu;
             m_Audio_Source.Play();
             Player.player_S.Changement = false;
         }
-        else if (Player.player_S.Musique == 2 && Player.player_S.Changement)
+        else if(Player.player_S.Musique == 1 && Player.player_S.Changement && Player.player_S.m_BonusShield)
+        {
+            Player.player_S.MusiqueAvant = 1;
+        }
+        else if (Player.player_S.Musique == 2 && Player.player_S.Changement && !Player.player_S.m_BonusShield)
         {
             m_Audio_Source.clip = m_Musique_Boss;
             m_Audio_Source.Play();
             Player.player_S.Changement = false;
+        }
+        else if (Player.player_S.Musique == 2 && Player.player_S.Changement && Player.player_S.m_BonusShield)
+        {
+            Player.player_S.MusiqueAvant = 2;
         }
         else if (Player.player_S.Musique == 3 && Player.player_S.Changement)
         {

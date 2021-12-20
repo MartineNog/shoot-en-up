@@ -36,7 +36,7 @@ public class Bullet : MonoBehaviour
         // Si le projectile a toucher un ennemi
         if (collision.gameObject.tag == "Enemy")
         {
-            Player.player_S.m_score++;
+            Player.player_S.m_score+=2;
             Player.player_S.EffetSonore = 2;
             OnHit?.Invoke();
             Destroy(this.gameObject);
@@ -45,7 +45,7 @@ public class Bullet : MonoBehaviour
         // Si le projectile a touché le boss
         if (collision.gameObject.tag == "Boss")
         {
-            Player.player_S.m_score += 3;
+            Player.player_S.m_score += 5;
             Player.player_S.EffetSonore = 2;
             OnHit?.Invoke();
             Destroy(this.gameObject);
