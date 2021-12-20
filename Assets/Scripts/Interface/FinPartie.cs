@@ -80,7 +80,7 @@ public class FinPartie : MonoBehaviour
             m_Snowman_Win.SetActive(true);
 
             // On met a jour le titre de la page de fin
-            m_Text_Titre.text = "CONGRATULATION !!";
+            m_Text_Titre.text = "CONGRATULATIONS !!";
             m_Text_Titre.color = new Color(0, 125, 0, 255);
 
             // On lance la musique de la victoire 

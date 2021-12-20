@@ -1794,9 +1794,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.2
-  m_Text: " - \"Wintery loop\" by Emma_MA\n - \"Deck the Halls\" by Dizzy Crow\n-
-    \"Snowland Map Screen\" by Spring Spring\n - \"Wall Impact\" by spookymodem\n-
-    \"Picnic on the lower yik\" by Spring Spring\n - \"Game Over - Bad chest SFX\"
+  m_Text: " - \"Wintery loop\" by Emma_MA\n - \"Deck the Halls\" by Dizzy Crow\n
+    - \"Snowland Map Screen\" by Spring Spring\n - \"Wall Impact\" by spookymodem\n
+    - \"Picnic on the lower yik\" by Spring Spring\n - \"Game Over - Bad chest SFX\"
     by Oiboo\n - \"Crystal Cave + Mysterious Ambience\" by cynicmusic\n - \"8-Bit
     Sound Effects Library\" by Little Robot Sound Factory\n - \"Pick up Item\" by
     Blender Foundation"
@@ -2990,7 +2990,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Shot
+  m_Text: Shoot
 --- !u!222 &1636276114
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3409,7 +3409,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Game control
+  m_Text: Game controls
 --- !u!222 &1866076120
 CanvasRenderer:
   m_ObjectHideFlags: 0
